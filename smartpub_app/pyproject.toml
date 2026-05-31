@@ -1,0 +1,76 @@
+[tool.poetry]
+name = "smartpub"
+version = "1.0.0"
+description = "SmartPub medical chatbot – RAG pipeline over PubMed with LLaMA 2 and Pinecone"
+authors = []
+packages = [
+    { include = "model" },
+    { include = "src" },
+]
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.13"
+
+# Web
+flask = "*"
+python-dotenv = "*"
+
+# LangChain stack
+langchain = "0.3.30"
+langchain-openai = "1.1.14"
+langchain-pinecone = "0.0.3"
+
+# Pinecone
+pinecone-client = "3.0.0"
+pinecone-datasets = "0.7.0"
+
+# ML / HuggingFace
+transformers = "*"
+sentence-transformers = "2.2.2"
+sentencepiece = "*"
+tokenizers = "*"
+accelerate = "*"
+ctransformers = "0.2.5"
+
+# PyTorch – CPU wheel on Linux, default PyPI on macOS/Windows
+torch = [
+    { version = "*", source = "pytorch-cpu", markers = "sys_platform == 'linux'" },
+    { version = "*", markers = "sys_platform != 'linux'" },
+]
+
+# Data / evaluation
+numpy = "*"
+pandas = "*"
+scikit-learn = "*"
+evaluate = "*"
+bert-score = "*"
+rouge-score = "*"
+
+# Visualisation
+matplotlib = "*"
+seaborn = "*"
+networkx = "*"
+pyvis = "*"
+
+# Misc
+nltk = "*"
+tqdm = "*"
+babel = "*"
+pydantic = "2.4.0"
+
+# ReFinED entity linker (GitHub release)
+refined = { url = "https://github.com/amazon-science/ReFinED/archive/refs/tags/V1.zip" }
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^4.0"
+pytest = "^8.0"
+pytest-mock = "^3.14"
+
+[[tool.poetry.source]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+priority = "explicit"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
