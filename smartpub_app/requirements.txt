@@ -17,7 +17,7 @@ numpy
 pandas
 pinecone-client==3.0.0
 pinecone-datasets==0.7.0
-pydantic==1.10.13
+pydantic==2.4.0
 python-dotenv
 pyvis
 rouge_score
