@@ -131,7 +131,8 @@ class PineconeVDBRawText(PineconeVDB):
         self.create_text_splitter()
 
     def create_text_splitter(self):
-        token_len = lambda text: len(self.tokenizer.encode(text))
+        def token_len(text):
+            return len(self.tokenizer.encode(text))
 
         self.text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=400,
@@ -151,8 +152,8 @@ class PineconeVDBRawText(PineconeVDB):
             metadata = []
             ids = []
 
-            for entry in batch:
-                
+            for _, row in batch.iterrows():
+
                 # take care of title or abstract that is empty
                 pmid = str(row['PMID'])
                 title = str(row['Title']).strip()

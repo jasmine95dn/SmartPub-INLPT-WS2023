@@ -3,5 +3,7 @@ repos:
     rev: v0.8.0
     hooks:
       - id: ruff
+        files: ^smartpub_app/
         args: [--fix]
       - id: ruff-format
+        files: ^smartpub_app/

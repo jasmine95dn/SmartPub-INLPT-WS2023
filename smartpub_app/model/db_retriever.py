@@ -39,7 +39,6 @@ class DBRetriever:
         self.index = pc.Index(name=index_name)
 
 
-        tokenizer = LlamaTokenizer.from_pretrained("meta-llama/Llama-2-13b-chat-hf",token=hf_auth)    
         self.embed_model = HuggingFaceEmbeddings(
                 model_name=model_name,
                 model_kwargs={'device': device},

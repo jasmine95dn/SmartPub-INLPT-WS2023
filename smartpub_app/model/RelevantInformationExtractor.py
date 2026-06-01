@@ -69,8 +69,7 @@ def getTopSimilarDocs(question = "Tell me about Schizophrenia?", num_docs=5, met
         query_results = index.query(vector=question_embedding, top_k=num_docs*5, namespace=namespace, include_metadata=True)
         #More finer level of similarity check among the preliminary results
         for match in query_results['matches']:
-            # Extract document ID, score, and values
-            score = match['score']
+            # Extract document ID and values
             text = match['metadata']['relations']
             authors = match.metadata['authors']
             date = match['metadata']['date']
