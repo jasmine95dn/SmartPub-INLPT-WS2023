@@ -16,13 +16,12 @@ flask = "*"
 python-dotenv = "*"
 
 # LangChain stack
-langchain = "0.3.30"
+langchain = "^1.0"
 langchain-openai = "1.1.14"
-langchain-pinecone = "0.0.3"
+langchain-pinecone = "0.2.13"
 
 # Pinecone
 pinecone-client = "3.0.0"
-pinecone-datasets = "0.7.0"
 
 # ML / HuggingFace
 transformers = "*"
@@ -56,7 +55,7 @@ pyvis = "*"
 nltk = "*"
 tqdm = "*"
 babel = "*"
-pydantic = "2.4.0"
+pydantic = ">=2.7.4,<3.0.0"
 
 # ReFinED entity linker (GitHub release)
 refined = { url = "https://github.com/amazon-science/ReFinED/archive/refs/tags/V1.zip" }
