@@ -1,0 +1,45 @@
+"""
+E2E conftest: same ML/cloud stubs as unit tests, then pre-import source
+modules so patch() can resolve dotted attribute paths.
+"""
+import sys
+from unittest.mock import MagicMock
+
+_torch = MagicMock()
+_torch.cuda.is_available.return_value = False
+_torch.device = MagicMock(side_effect=lambda x: x)
+_torch.bfloat16 = "bfloat16"
+
+_tqdm_mod = MagicMock()
+_tqdm_mod.tqdm = lambda iterable, **kwargs: iterable
+
+_STUBS = {
+    "torch": _torch,
+    "torch.cuda": _torch.cuda,
+    "transformers": MagicMock(),
+    "pinecone": MagicMock(),
+    "langchain": MagicMock(),
+    "langchain.chains": MagicMock(),
+    "langchain.embeddings": MagicMock(),
+    "langchain.embeddings.huggingface": MagicMock(),
+    "langchain.vectorstores": MagicMock(),
+    "langchain.llms": MagicMock(),
+    "langchain.text_splitter": MagicMock(),
+    "langchain_pinecone": MagicMock(),
+    "sentence_transformers": MagicMock(),
+    "sklearn": MagicMock(),
+    "sklearn.metrics": MagicMock(),
+    "sklearn.metrics.pairwise": MagicMock(),
+    "tqdm": _tqdm_mod,
+    "dotenv": MagicMock(),
+    "pandas": MagicMock(),
+    "numpy": MagicMock(),
+}
+
+for _name, _mock in _STUBS.items():
+    sys.modules.setdefault(_name, _mock)
+
+# Pre-import so patch() can resolve 'model.model.DBRetriever' etc.
+import model.db_retriever   # noqa: E402
+import model.qa_inference    # noqa: E402
+import model.model           # noqa: E402
