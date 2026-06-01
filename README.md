@@ -161,4 +161,4 @@ closed once that branch is merged:
 ## Acknowledgements
 
 Developed as part of the **Information Retrieval and Natural Language Processing
-for Text (INLPT) WS 2023** course at Saarland University.
+for Text (INLPT) WS 2023** course at Heidelberg University, Winter 2023.
