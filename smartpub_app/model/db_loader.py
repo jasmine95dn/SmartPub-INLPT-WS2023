@@ -165,7 +165,7 @@ class PineconeVDBRawText(PineconeVDB):
                 if not title:
                     if abstract:
                         ids.append(pmid)
-                        texts.append('text': f'Title:  Abstract: {abstract}')
+                        texts.append(f'Title:  Abstract: {abstract}')
                 elif not abstract:
                     if title:
                         ids.append(pmid)

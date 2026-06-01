@@ -71,6 +71,13 @@ name = "pytorch-cpu"
 url = "https://download.pytorch.org/whl/cpu"
 priority = "explicit"
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "system: marks tests that exercise the full HTTP interface (deselect with '-m not system')",
+    "slow: marks tests that are long-running",
+]
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
