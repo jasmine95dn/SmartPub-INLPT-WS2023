@@ -143,21 +143,6 @@ poetry run pytest -v
 
 ---
 
-## Security — Dependabot Alerts
-
-All 5 alerts present on `main` are **resolved in the `re-work` branch** and will be
-closed once that branch is merged:
-
-| # | Package | Severity | Fixed version in `re-work` |
-|---|---------|----------|---------------------------|
-| 5 | langchain | High | `^1.0` (>= 1.0.0) |
-| 4 | langchain-openai | Low | `1.1.14` |
-| 3 | langchain | Low | `^1.0` (>= 1.0.0) |
-| 2 | langchain | Medium | `^1.0` (>= 1.0.0) |
-| 1 | pydantic | Medium | `>=2.7.4` (pydantic v2) |
-
----
-
 ## Acknowledgements
 
 Developed as part of the **Information Retrieval and Natural Language Processing
