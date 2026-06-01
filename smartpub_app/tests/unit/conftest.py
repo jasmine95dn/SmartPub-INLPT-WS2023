@@ -2,6 +2,7 @@
 Stub all heavy ML / cloud dependencies before any source module is imported.
 These stubs run at conftest import time, before pytest collects tests.
 """
+
 import sys
 from unittest.mock import MagicMock
 

@@ -1,5 +1,5 @@
 import pytest
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 from model.qa_inference import QA
 
 
@@ -9,6 +9,7 @@ def qa():
 
 
 # ── QA.__init__ ───────────────────────────────────────────────────────────────
+
 
 class TestQAInit:
     def test_stores_prompt(self, qa):
@@ -34,9 +35,11 @@ class TestQAInit:
 
 # ── QA.qa_inference — text-generation ────────────────────────────────────────
 
+
 class TestQAInferenceTextGeneration:
     def test_sets_llm_attribute(self, qa):
         import model.qa_inference as qi_mod
+
         mock_pipeline_fn = MagicMock(return_value=MagicMock())
         mock_hf_pipeline_cls = MagicMock(return_value=MagicMock())
 
@@ -45,7 +48,9 @@ class TestQAInferenceTextGeneration:
         qi_mod.pipeline = mock_pipeline_fn
         qi_mod.HuggingFacePipeline = mock_hf_pipeline_cls
         try:
-            qa.qa_inference(task="text-generation", model_name="meta-llama/Llama-2-13b-chat-hf")
+            qa.qa_inference(
+                task="text-generation", model_name="meta-llama/Llama-2-13b-chat-hf"
+            )
             assert hasattr(qa, "llm")
         finally:
             qi_mod.pipeline = original_pipeline
@@ -53,26 +58,32 @@ class TestQAInferenceTextGeneration:
 
     def test_sets_qa_pipeline_attribute(self, qa):
         import model.qa_inference as qi_mod
+
         mock_result = MagicMock()
         mock_pipeline_fn = MagicMock(return_value=mock_result)
 
         original = qi_mod.pipeline
         qi_mod.pipeline = mock_pipeline_fn
         try:
-            qa.qa_inference(task="text-generation", model_name="meta-llama/Llama-2-13b-chat-hf")
+            qa.qa_inference(
+                task="text-generation", model_name="meta-llama/Llama-2-13b-chat-hf"
+            )
             assert qa.qa_pipeline == mock_result
         finally:
             qi_mod.pipeline = original
 
     def test_calls_model_eval(self, qa):
         import model.qa_inference as qi_mod
+
         mock_model = MagicMock()
         qi_mod.AutoModelForCausalLM.from_pretrained.return_value = mock_model
 
         original = qi_mod.pipeline
         qi_mod.pipeline = MagicMock(return_value=MagicMock())
         try:
-            qa.qa_inference(task="text-generation", model_name="meta-llama/Llama-2-13b-chat-hf")
+            qa.qa_inference(
+                task="text-generation", model_name="meta-llama/Llama-2-13b-chat-hf"
+            )
             mock_model.eval.assert_called_once()
         finally:
             qi_mod.pipeline = original
@@ -80,13 +91,17 @@ class TestQAInferenceTextGeneration:
 
 # ── QA.qa_inference — text2text-generation ───────────────────────────────────
 
+
 class TestQAInferenceText2Text:
     def test_returns_generated_text(self):
         q = QA(prompt="Summarise COVID.", task="text2text-generation", hf_auth="token")
 
         import model.qa_inference as qi_mod
+
         mock_pipeline_fn = MagicMock(
-            return_value=MagicMock(return_value=[{"generated_text": "COVID is a disease."}])
+            return_value=MagicMock(
+                return_value=[{"generated_text": "COVID is a disease."}]
+            )
         )
         original = qi_mod.pipeline
         qi_mod.pipeline = mock_pipeline_fn
@@ -100,6 +115,7 @@ class TestQAInferenceText2Text:
         q = QA(prompt="Q?", task="text2text-generation", hf_auth="token")
 
         import model.qa_inference as qi_mod
+
         mock_pipeline_fn = MagicMock(
             return_value=MagicMock(return_value=[{"generated_text": "answer"}])
         )

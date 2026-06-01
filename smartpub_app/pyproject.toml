@@ -79,6 +79,9 @@ markers = [
     "slow: marks tests that are long-running",
 ]
 
+[tool.ruff]
+extend-exclude = ["*.ipynb", "*_old.py", "model/run.py"]
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

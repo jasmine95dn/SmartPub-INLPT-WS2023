@@ -2,6 +2,7 @@
 E2E conftest: same ML/cloud stubs as unit tests, then pre-import source
 modules so patch() can resolve dotted attribute paths.
 """
+
 import sys
 from unittest.mock import MagicMock
 
@@ -45,6 +46,3 @@ for _name, _mock in _STUBS.items():
     sys.modules.setdefault(_name, _mock)
 
 # Pre-import so patch() can resolve 'model.model.DBRetriever' etc.
-import model.db_retriever   # noqa: E402
-import model.qa_inference    # noqa: E402
-import model.model           # noqa: E402

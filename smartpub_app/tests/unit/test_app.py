@@ -1,10 +1,11 @@
 import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 
 @pytest.fixture(scope="module")
 def flask_app():
     from app import app
+
     app.config["TESTING"] = True
     return app
 
@@ -16,6 +17,7 @@ def client(flask_app):
 
 
 # ── GET / ─────────────────────────────────────────────────────────────────────
+
 
 class TestIndexRoute:
     def test_returns_200(self, client):
@@ -32,6 +34,7 @@ class TestIndexRoute:
 
 
 # ── POST /get ────────────────────────────────────────────────────────────────
+
 
 class TestChatRoute:
     def test_returns_pipeline_answer(self, client):

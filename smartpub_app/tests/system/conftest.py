@@ -2,6 +2,7 @@
 System conftest: stubs external services so the full HTTP stack can run
 without real Pinecone / HuggingFace credentials.
 """
+
 import sys
 from unittest.mock import MagicMock
 

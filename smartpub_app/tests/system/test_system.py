@@ -6,6 +6,7 @@ Pinecone or HuggingFace credentials and without loading the LLM.
 Run with:   poetry run pytest -m system -v
 Excluded from normal CI via: pytest -m "not system"
 """
+
 import pytest
 from unittest.mock import patch
 
@@ -13,6 +14,7 @@ from unittest.mock import patch
 @pytest.fixture(scope="module")
 def system_app():
     from app import app
+
     app.config["TESTING"] = True
     return app
 
@@ -24,6 +26,7 @@ def client(system_app):
 
 
 # ── Chat page ─────────────────────────────────────────────────────────────────
+
 
 @pytest.mark.system
 class TestChatPageLoads:
@@ -45,6 +48,7 @@ class TestChatPageLoads:
 
 
 # ── Chat endpoint — happy path ────────────────────────────────────────────────
+
 
 @pytest.mark.system
 class TestChatEndpointHappyPath:
@@ -73,6 +77,7 @@ class TestChatEndpointHappyPath:
 
 # ── Chat endpoint — error handling ────────────────────────────────────────────
 
+
 @pytest.mark.system
 class TestChatEndpointErrors:
     def test_missing_msg_field_returns_500(self, client):
@@ -96,6 +101,7 @@ class TestChatEndpointErrors:
 
 
 # ── Chat endpoint — multiple requests ────────────────────────────────────────
+
 
 @pytest.mark.system
 class TestChatEndpointSequential:

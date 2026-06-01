@@ -22,5 +22,3 @@ docsearch = PineconeVectorStore.from_texts(
     embeddings,
     index_name=index_name,
 )
-
-
