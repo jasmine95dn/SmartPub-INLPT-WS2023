@@ -1,19 +1,17 @@
 import torch
-from langchain.embeddings.huggingface import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_pinecone import PineconeVectorStore as vectorstore_pc
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 import os
 import json
 from pinecone import Pinecone as pc
 from pinecone import PodSpec
-from langchain_pinecone import Pinecone as vectorstore_pc
 from tqdm import tqdm
-from dotenv import load_dotenv
-from transformers import LlamaTokenizer
 from dotenv import load_dotenv, find_dotenv
-_ = load_dotenv(find_dotenv())
+from transformers import LlamaTokenizer
 import pandas as pd
-from langchain.text_splitter import RecursiveCharacterTextSplitter
 import sys
-import pandas as pd
+_ = load_dotenv(find_dotenv())
 
 class PineconeVDB():
     """
@@ -102,7 +100,7 @@ class PineconeVDB():
         print("Indexing Complete!")
 
     def find_most_similar_docs(self, query: str, index: pc.Index, num_of_chunks: int = 3):
-        vectorstore = vectorstore_pc(index, self.embedding_model, 'relations')
+        vectorstore = vectorstore_pc(index=index, embedding=self.embedding_model, text_key='relations')
         return vectorstore.similarity_search(
                 query, 
                 k=num_of_chunks 

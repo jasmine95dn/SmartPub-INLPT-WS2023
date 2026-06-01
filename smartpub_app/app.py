@@ -1,10 +1,7 @@
-from flask import Flask, render_template, jsonify, request 
+from flask import Flask, render_template, request
 from dotenv import load_dotenv
 from model.model import pipeline
-from model.qa_inference import QA
-from langchain.chains import RetrievalQA
 import os
-import transformers
 
 
 app = Flask(__name__)

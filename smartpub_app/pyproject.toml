@@ -19,6 +19,8 @@ python-dotenv = "*"
 langchain = "^1.0"
 langchain-openai = "1.1.14"
 langchain-pinecone = "0.2.13"
+langchain-huggingface = "*"
+langchain-text-splitters = "*"
 
 # Pinecone
 pinecone-client = "3.0.0"

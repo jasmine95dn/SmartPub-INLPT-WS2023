@@ -4,9 +4,9 @@ import os
 from sentence_transformers import SentenceTransformer
 from transformers import BertTokenizer, BertModel
 from sklearn.metrics.pairwise import cosine_similarity
-from langchain.embeddings.huggingface import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from pinecone import Pinecone
-from langchain.vectorstores import Pinecone as pc
+from langchain_pinecone import PineconeVectorStore as pc
 from dotenv import load_dotenv, find_dotenv
 _ = load_dotenv(find_dotenv())
 
@@ -39,7 +39,7 @@ def getTopSimilarDocs(question = "Tell me about Schizophrenia?", num_docs=5, met
     index, sts_model, namespace= setup()
     # Calculate STS between question and each document
     question_embedding = sts_model.embed_documents([question])[0]
-    vectorstore_db = pc(index, sts_model.embed_query, 'relations')
+    vectorstore_db = pc(index=index, embedding=sts_model, text_key='relations')
     #Direct STS method
     if method == 0:
         # Query the index to find similar documents

@@ -5,7 +5,7 @@ This contains the script to proceed the QA inference with some models
 
 from transformers import pipeline, LlamaTokenizer, BitsAndBytesConfig, AutoConfig, AutoModelForCausalLM
 from torch import bfloat16
-from langchain.llms import HuggingFacePipeline
+from langchain_huggingface import HuggingFacePipeline
 import os
 import torch
 
