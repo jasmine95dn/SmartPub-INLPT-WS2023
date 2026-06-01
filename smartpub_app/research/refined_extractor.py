@@ -15,7 +15,6 @@ class RefinedEntityExtractor:
     """
 
     def __init__(self, device=-1):
-
         # set extractor as ReFInED extractor
         self.extractor = Refined.from_pretrained(
             model_name="wikipedia_model_with_numbers",

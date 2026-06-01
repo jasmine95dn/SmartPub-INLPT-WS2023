@@ -20,7 +20,6 @@ class PineconeVDB:
     """
 
     def __init__(self, embedding_model_name: str, batch_size: int = 32):
-
         # throw exception if no GPU is available
         if torch.cuda.is_available():
             self.device = "cuda:0"
