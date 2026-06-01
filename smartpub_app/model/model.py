@@ -4,52 +4,58 @@ This contains a simple script to the pipeline to retrieve the answer
 
 from .db_retriever import DBRetriever
 from .qa_inference import QA
-from langchain.chains import RetrievalQA
-import os
-import transformers
+from langchain.chains import create_retrieval_chain
+from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain_core.prompts import PromptTemplate
+from src.prompt import prompt_template
 import torch
 
 
-def pipeline(api_key:str, question: str, hf_auth:str, 
-			index_name="smartpub", model_name='meta-llama/Llama-2-13b-chat-hf',
-			device=torch.device('cpu'), verbose=True, batch_size=32, k=10) -> str:
-	"""
-	Create a pipeline for the question anwering
-	:param api_key: The API key for accessing the service.
-	:param question: question as the query
-	:param str hf_auth: The HF authentication key to retrieve
-	:param device: choose the device to run this pipeline on, for upgrading to GPU change this to  (default: -1, which means for CPU)
-	:return: final answer as output
-	"""
+def pipeline(
+    api_key: str,
+    question: str,
+    hf_auth: str,
+    index_name="smartpub",
+    model_name="meta-llama/Llama-2-13b-chat-hf",
+    device=torch.device("cpu"),
+    verbose=True,
+    batch_size=32,
+    k=10,
+) -> str:
+    """
+    Create a pipeline for the question answering
+    :param api_key: The API key for accessing the Pinecone service.
+    :param question: question as the query
+    :param str hf_auth: The HuggingFace authentication token
+    :param device: device to run on (auto-detected at runtime)
+    :return: final answer as output
+    """
 
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-	# create retriever KGs from Pinecone database
+    # Build Pinecone retriever
+    retriever = DBRetriever(
+        api_key=api_key,
+        hf_auth=hf_auth,
+        index_name=index_name,
+        model_name=model_name,
+        batch_size=batch_size,
+        device=device,
+    )
 
-	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    # Load LLM
+    qa = QA(prompt=question, device=device, hf_auth=hf_auth)
+    qa.qa_inference(qa.task, qa.model_name)
 
-	retriever = DBRetriever(api_key=api_key, hf_auth=hf_auth,
-							index_name=index_name,
-							model_name=model_name, batch_size=batch_size, device=device)
+    # Build LCEL RAG chain
+    prompt = PromptTemplate(
+        template=prompt_template, input_variables=["context", "input"]
+    )
+    combine_chain = create_stuff_documents_chain(qa.llm, prompt)
+    rag_chain = create_retrieval_chain(
+        retriever.vectorstore_db.as_retriever(search_kwargs={"k": k}),
+        combine_chain,
+    )
 
-	#docs_pmid = retriever.getTopSimilarDocs(question=question, num_docs=10)
-
-	# QA model
-	qa = QA(prompt=question, device=device, hf_auth=hf_auth)
-	qa.qa_inference(qa.task, qa.model_name)
-
-	rag_pipeline = RetrievalQA.from_chain_type(
-	    llm=qa.llm,
-	    chain_type="stuff",
-	    verbose=verbose,
-	    retriever=retriever.vectorstore_db.as_retriever(search_kwargs={"k":k}),
-	    chain_type_kwargs={
-	        "verbose": verbose },
-
-	)
-
-	answer = rag_pipeline['result']
-
-	return answer
-
-	
-
+    result = rag_chain.invoke({"input": question})
+    return result["answer"]

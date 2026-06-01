@@ -1,0 +1,42 @@
+services:
+
+  # ── Web chatbot ──────────────────────────────────────────────────────────────
+  web:
+    build:
+      context: ./smartpub_app
+      dockerfile: Dockerfile
+    image: smartpub:latest
+    container_name: smartpub-web
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./smartpub_app/.env
+    environment:
+      - FLASK_ENV=production
+    volumes:
+      # Mount data directory read-only so the app can access PDFs if needed
+      - ./data:/app/data:ro
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ── One-off indexer (loads PDFs into Pinecone) ───────────────────────────────
+  # Run with: docker compose --profile tools run --rm indexer
+  indexer:
+    build:
+      context: ./smartpub_app
+      dockerfile: Dockerfile
+    image: smartpub:latest
+    container_name: smartpub-indexer
+    profiles:
+      - tools
+    env_file:
+      - ./smartpub_app/.env
+    volumes:
+      # PDFs must be mounted here before running
+      - ./data:/app/data:ro
+    command: ["python", "store_index.py"]

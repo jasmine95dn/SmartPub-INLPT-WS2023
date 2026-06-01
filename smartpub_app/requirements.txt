@@ -6,9 +6,9 @@ ctransformers==0.2.5
 evaluate
 flask
 https://github.com/amazon-science/ReFinED/archive/refs/tags/V1.zip
-langchain-openai==0.0.7
+langchain-openai==1.1.14
 langchain-pinecone==0.0.3
-langchain==0.1.9
+langchain==0.3.30
 langchain_pinecone
 matplotlib
 networkx
@@ -17,7 +17,7 @@ numpy
 pandas
 pinecone-client==3.0.0
 pinecone-datasets==0.7.0
-pydantic==1.10.9
+pydantic==2.4.0
 python-dotenv
 pyvis
 rouge_score

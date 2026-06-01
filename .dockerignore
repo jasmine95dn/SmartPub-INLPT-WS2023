@@ -1,0 +1,63 @@
+# Git
+.git/
+.gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Secrets
+.env
+*.env
+.env.*
+
+# Jupyter notebooks & research
+*.ipynb
+.ipynb_checkpoints/
+BM25/
+data/
+evaluation/
+Meetings/
+kaping/
+kaping_prompt_zero-shot/
+"Knowledge Graph"/
+research/
+
+# Test & coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Docs
+*.md
+README*
+
+# Logs & outputs
+*.log
+logs/
+output.txt
+
+# Model artifacts
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.h5
+*.pkl
+*.pickle
